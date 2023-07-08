@@ -12,9 +12,7 @@ double fullspec_window(int n,int N){
 	return 1;
 }
 wfunc_t window = hann_window;
-int fs = 128;
-int overlap = fs/2;
-CM stft(std::vector<double> &signal){
+CM stft(std::vector<double> &signal,int fs,int overlap){
 	
 	//
 	Eigen:Eigen::FFT<double>fft;
@@ -37,7 +35,7 @@ CM stft(std::vector<double> &signal){
 	stftm.transposeInPlace();
 	return stftm;
 }
-std::vector<double>  istft(CM& spectrum){
+std::vector<double>  istft(CM& spectrum,int fs,int overlap){
 	spectrum.transposeInPlace();
 	Eigen::FFT<double> fft;
 	int window_step = fs - overlap;
