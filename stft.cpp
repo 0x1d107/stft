@@ -34,14 +34,15 @@ CM stft(std::vector<double> &signal){
 
 
 	}
-
+	stftm.transposeInPlace();
 	return stftm;
 }
 std::vector<double>  istft(CM& spectrum){
+	spectrum.transposeInPlace();
 	Eigen::FFT<double> fft;
 	int window_step = fs - overlap;
 	int T = spectrum.rows();
-	int length = T*window_step;
+	int length = (T-1)*window_step+fs;
 	std::vector<double> signal(length);
 	for(int i=0;i<T;i++){
 		std::vector<std::complex<double>> frq(fs,0);
@@ -50,7 +51,7 @@ std::vector<double>  istft(CM& spectrum){
 			frq[j] = spectrum(i,j);
 		fft.inv(f,frq);
 		for(int j = 0; j < fs;j++)
-			signal[j+window_step*i] = f[j]/window(j,fs);
+			if(window(j,fs)>0)signal[j+window_step*i] = f[j]/window(j,fs);
 		
 
 	}
