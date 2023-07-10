@@ -17,7 +17,7 @@ CM stft(std::vector<double> &signal,int nperseg,int overlap){
 	//
 	Eigen:Eigen::FFT<double>fft;
 	int window_step = nperseg - overlap;
-	int T = signal.size()/window_step;
+	int T = (signal.size()/window_step)+((signal.size()%window_step)>0)+1;
 	CM stftm(T,nperseg);
 	for(int i=0;i<T;i++){
 		std::vector<double> f(nperseg);
